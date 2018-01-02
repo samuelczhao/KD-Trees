@@ -1,25 +1,32 @@
 import java.awt.Color;
 
 public class PointSET implements PointContainer
-{    
+{  
+	private SET<Point2D> set;
+	
+	public PointSET()
+	{
+		set = new SET<Point2D>();
+	}
+	
     public boolean isEmpty()
     {
-        throw new UnsupportedOperationException();
+        return set.isEmpty();
     }
     
     public int size()
     {
-        throw new UnsupportedOperationException();
+        return set.size();
     }
     
     public void insert(Point2D p)
     {
-        throw new UnsupportedOperationException();
+        set.add(p);
     }
     
     public boolean contains(Point2D p)
     {
-        throw new UnsupportedOperationException();
+        return set.contains(p);
     }
     
     public void draw(Canvas canvas)
