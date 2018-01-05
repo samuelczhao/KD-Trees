@@ -43,11 +43,14 @@ public class PointSET implements PointContainer
     
     public Iterable<Point2D> range(RectHV rect)
     {
-    	throw new UnsupportedOperationException();
+    	
     }
     
     public Point2D nearest(Point2D p)
     {
-    	throw new UnsupportedOperationException();
+    	if (isEmpty())
+    	{
+    		return null;
+    	}
     }
 }
