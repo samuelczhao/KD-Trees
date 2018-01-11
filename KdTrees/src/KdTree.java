@@ -57,7 +57,7 @@ public class KdTree implements PointContainer
 		{
 			return point.x() < n.point.x();
 		}
-		
+
 		return point.y() < n.point.y();
 	}
 
@@ -111,12 +111,12 @@ public class KdTree implements PointContainer
 		{
 			return false;
 		}
-		
+
 		if (root.point.equals(p))
 		{
 			return true;
 		}
-		
+
 		if (atLeft(root, p, l))
 		{
 			return contains(root.left, p, ++l);
@@ -186,7 +186,7 @@ public class KdTree implements PointContainer
 			{
 				thing.add(node.point);
 			}
-			
+
 			range(node.left, rect, thing);
 			range(node.right, rect, thing);
 		}
@@ -198,28 +198,35 @@ public class KdTree implements PointContainer
 		{
 			return null;
 		}
-		
-		return nearest(p, root, new Point2D(100, 100));
+
+		return nearest(p, root, new Point2D(100, 100), 0);
 	}
-	
-	private Point2D nearest(Point2D p, Node root, Point2D nearest)
+
+	private Point2D nearest(Point2D p, Node root, Point2D nearest, int l)
 	{
 		if (root == null)
 		{
 			return nearest;
 		}
-		
+
 		if (root.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p))
 		{
 			if (root.point.distanceSquaredTo(p) < nearest.distanceSquaredTo(p))
 			{
 				nearest = root.point;
 			}
-			
-			nearest = nearest(p, root.left, nearest);
-			nearest = nearest(p, root.right, nearest);
+			if (atLeft(root, p, l++))
+			{
+				nearest = nearest(p, root.left, nearest, l);
+				nearest = nearest(p, root.right, nearest, l);
+			}
+			else
+			{
+				nearest = nearest(p, root.right, nearest, l);
+				nearest = nearest(p, root.left, nearest, l);
+			}
 		}
-		
+
 		return nearest;
 	}
 }
