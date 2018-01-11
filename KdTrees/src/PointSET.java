@@ -34,11 +34,10 @@ public class PointSET implements PointContainer
         canvas.setPenColor(Color.BLACK);
         canvas.setPenRadius(.01);
         
-        // TODO: Insert code here to call the point() method on canvas
-        // for each point that has been inserted into your PointSET
-
-        // Don't forget to remove this!
-    	throw new UnsupportedOperationException();
+        for (Point2D point : set)
+        {
+        	canvas.point(point.x(), point.y());
+        }
     }
     
     public Iterable<Point2D> range(RectHV rect)
