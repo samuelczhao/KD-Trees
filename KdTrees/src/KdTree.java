@@ -97,7 +97,7 @@ public class KdTree implements PointContainer
 
 	public boolean contains(Point2D p)
 	{
-		int level = 0;
+		int level = 1;
 		Node node = root;
 		while (node != null)
 		{
