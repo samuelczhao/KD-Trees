@@ -3,6 +3,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import javax.security.auth.x500.X500Principal;
+
 public class KdTree implements PointContainer
 {
 	private Node root;
@@ -192,6 +194,32 @@ public class KdTree implements PointContainer
 
 	public Point2D nearest(Point2D p)
 	{
-		throw new UnsupportedOperationException();
+		if (isEmpty())
+		{
+			return null;
+		}
+		
+		return nearest(p, root, new Point2D(100, 100));
+	}
+	
+	private Point2D nearest(Point2D p, Node root, Point2D nearest)
+	{
+		if (root == null)
+		{
+			return nearest;
+		}
+		
+		if (root.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p))
+		{
+			if (root.point.distanceSquaredTo(p) < nearest.distanceSquaredTo(p))
+			{
+				nearest = root.point;
+			}
+			
+			nearest = nearest(p, root.left, nearest);
+			nearest = nearest(p, root.right, nearest);
+		}
+		
+		return nearest;
 	}
 }
