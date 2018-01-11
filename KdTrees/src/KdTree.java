@@ -1,9 +1,5 @@
 import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
-import java.util.logging.Level;
-
-import javax.security.auth.x500.X500Principal;
 
 public class KdTree implements PointContainer
 {
@@ -64,22 +60,29 @@ public class KdTree implements PointContainer
 	private void insert(Point2D point, Node root, int level)
 	{
 		if (root.point.equals(point))
+		{
 			return;
+		}
 		if (atLeft(root, point, level))
 		{
 			if (root.left == null)
 			{
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
+				{
 					rect = new RectHV(r.xmin(), r.ymin(), root.point.x(), r.ymax());
+				}
 				else
+				{
 					rect = new RectHV(r.xmin(), r.ymin(), r.xmax(), root.point.y());
+				}
 				root.left = new Node(point, rect);
 				size++;
 			}
 			else
+			{
 				insert(point, root.left, ++level);
-
+			}
 		}
 		else
 		{
@@ -88,9 +91,13 @@ public class KdTree implements PointContainer
 
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
+				{
 					rect = new RectHV(root.point.x(), r.ymin(), r.xmax(), r.ymax());
+				}
 				else
+				{
 					rect = new RectHV(r.xmin(), root.point.y(), r.xmax(), r.ymax());
+				}
 				root.right = new Node(point, rect);
 				size++;
 			}
@@ -131,15 +138,6 @@ public class KdTree implements PointContainer
 	{
 		canvas.setPenColor(Color.BLACK);
 		canvas.setPenRadius(.01);
-
-		// For points, use these calls:
-		//    canvas.point(put your parameters here)
-		//
-		// For dividing lines, use these calls:
-		//    canvas.setPenRadius(.002);
-		//	  canvas.setPenColor(Color.RED); (for vertical dividing lines)
-		//	  canvas.setPenColor(Color.BLUE); (for horizontal dividing lines)
-		//    canvas.line(put your parameters here)
 		drawV(canvas, root);
 	}
 
