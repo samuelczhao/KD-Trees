@@ -51,8 +51,8 @@ public class KdTree implements PointContainer
 	private boolean atLeft(Node n, Point2D point, int l)
 	{
 		if (l % 2 == 0)
-			return point.x() <= n.point.x();
-		return point.y() <= n.point.y();
+			return point.x() < n.point.x();
+		return point.y() < n.point.y();
 	}
 
 	private void insert(Point2D point, Node root, int level)
