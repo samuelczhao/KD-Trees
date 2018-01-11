@@ -43,7 +43,16 @@ public class PointSET implements PointContainer
     
     public Iterable<Point2D> range(RectHV rect)
     {
+    	SET<Point2D> thing = new SET<Point2D>();
+    	for (Point2D point : set)
+    	{
+    		if (rect.contains(point))
+    		{
+    			thing.add(point);
+    		}
+    	}
     	
+    	return thing;
     }
     
     public Point2D nearest(Point2D p)
@@ -52,5 +61,19 @@ public class PointSET implements PointContainer
     	{
     		return null;
     	}
+    	
+    	Point2D nearest = null;
+    	double distance = 1;
+    	
+    	for (Point2D point : set)
+    	{
+    		if ((p.x() - point.x()) * (p.x() - point.x()) + (p.y() - point.y()) * (p.y() - point.y()) < distance)
+    		{
+    			distance = (p.x() - point.x()) * (p.x() - point.x()) + (p.y() - point.y()) * (p.y() - point.y());
+    			nearest = point;
+    		}
+    	}
+    	
+    	return nearest;
     }
 }
