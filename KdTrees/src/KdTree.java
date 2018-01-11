@@ -41,6 +41,7 @@ public class KdTree implements PointContainer
 		if (root == null)
 		{
 			root = new Node(point, new RectHV(0.0, 0.0, 1.0, 1.0));
+			size++;
 			return;
 		}
 
@@ -66,6 +67,7 @@ public class KdTree implements PointContainer
 				else
 					rect = new RectHV(r.xmin(), r.ymin(), r.xmax(), root.point.y());
 				root.left = new Node(point, rect);
+				size++;
 			}
 			else
 				insert(point, root.left, ++level);
@@ -81,6 +83,7 @@ public class KdTree implements PointContainer
 				else
 					rect = new RectHV(r.xmin(), root.point.y(), r.xmax(), r.ymax());
 				root.right = new Node(point, rect);
+				size++;
 			}
 			else
 				insert(point, root.right, ++level);
