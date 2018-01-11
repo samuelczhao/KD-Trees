@@ -63,7 +63,6 @@ public class KdTree implements PointContainer
 		{
 			if (root.left == null)
 			{
-
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
 					rect = new RectHV(r.xmin(), r.ymin(), root.point.x(), r.ymax());
@@ -97,18 +96,29 @@ public class KdTree implements PointContainer
 
 	public boolean contains(Point2D p)
 	{
-		int level = 1;
-		Node node = root;
-		while (node != null)
+		return contains(root, p, 0);
+	}
+
+	private boolean contains(Node root, Point2D p, int l)
+	{
+		if (root == null)
 		{
-			if (node.point.equals(p))
-				return true;
-			if (atLeft(root, p, level++))
-				node = node.left;
-			else
-				node = node.right;
+			return false;
 		}
-		return false;
+		
+		if (root.point.equals(p))
+		{
+			return true;
+		}
+		
+		if (atLeft(root, p, l))
+		{
+			return contains(root.left, p, ++l);
+		}
+		else
+		{
+			return contains(root.right, p, ++l);
+		}
 	}
 
 	public void draw(Canvas canvas)
