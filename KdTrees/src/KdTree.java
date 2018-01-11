@@ -57,12 +57,13 @@ public class KdTree implements PointContainer
 
 	private void insert(Point2D point, Node root, int level)
 	{
+		if (root.point.equals(point))
+			return;
 		if (atLeft(root, point, level))
 		{
 			if (root.left == null)
 			{
-				if (root.point.equals(point))
-					return;
+
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
 					rect = new RectHV(r.xmin(), r.ymin(), root.point.x(), r.ymax());
@@ -79,8 +80,7 @@ public class KdTree implements PointContainer
 		{
 			if (root.right == null)
 			{
-				if (root.point.equals(point))
-					return;
+
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
 					rect = new RectHV(root.point.x(), r.ymin(), r.xmax(), r.ymax());
@@ -97,7 +97,18 @@ public class KdTree implements PointContainer
 
 	public boolean contains(Point2D p)
 	{
-		throw new UnsupportedOperationException();
+		int level = 0;
+		Node node = root;
+		while (node != null)
+		{
+			if (node.point.equals(p))
+				return true;
+			if (atLeft(root, p, level++))
+				node = node.left;
+			else
+				node = node.right;
+		}
+		return false;
 	}
 
 	public void draw(Canvas canvas)
