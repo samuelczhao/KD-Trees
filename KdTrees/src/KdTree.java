@@ -45,7 +45,7 @@ public class KdTree implements PointContainer
 			return;
 		}
 
-		insert(point, root, 1);
+		insert(point, root, 0);
 	}
 
 	private boolean atLeft(Node n, Point2D point, int l)
@@ -59,8 +59,10 @@ public class KdTree implements PointContainer
 	{
 		if (atLeft(root, point, level))
 		{
-			if (root.left == null && !root.point.equals(point))
+			if (root.left == null)
 			{
+				if (root.point.equals(point))
+					return;
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
 					rect = new RectHV(r.xmin(), r.ymin(), root.point.x(), r.ymax());
@@ -75,8 +77,10 @@ public class KdTree implements PointContainer
 		}
 		else
 		{
-			if (root.right == null && !root.point.equals(point))
+			if (root.right == null)
 			{
+				if (root.point.equals(point))
+					return;
 				RectHV rect, r = root.rect;
 				if (level % 2 == 0)
 					rect = new RectHV(root.point.x(), r.ymin(), r.xmax(), r.ymax());
@@ -109,11 +113,35 @@ public class KdTree implements PointContainer
 		//	  canvas.setPenColor(Color.RED); (for vertical dividing lines)
 		//	  canvas.setPenColor(Color.BLUE); (for horizontal dividing lines)
 		//    canvas.line(put your parameters here)
+		drawV(canvas, root);
 	}
 
-	private void draw(Node root)
+	private void drawH(Canvas canvas, Node root)
 	{
+		if (root == null)
+			return;
+		canvas.setPenColor(Color.BLACK);
+		canvas.setPenRadius(.01);
+		canvas.point(root.point.x(), root.point.y());
+		canvas.setPenRadius(.002);
+		canvas.setPenColor(Color.BLUE);
+		canvas.line(root.rect.xmin(), root.point.y(), root.rect.xmax(), root.point.y());
+		drawV(canvas, root.left);
+		drawV(canvas, root.right);
+	}
 
+	private void drawV(Canvas canvas, Node root)
+	{
+		if (root == null)
+			return;
+		canvas.setPenColor(Color.BLACK);
+		canvas.setPenRadius(.01);
+		canvas.point(root.point.x(), root.point.y());
+		canvas.setPenRadius(.002);
+		canvas.setPenColor(Color.RED);
+		canvas.line(root.point.x(), root.rect.ymin(), root.point.x(), root.rect.ymax());
+		drawH(canvas, root.left);
+		drawH(canvas, root.right);
 	}
 
 	public Iterable<Point2D> range(RectHV rect)
