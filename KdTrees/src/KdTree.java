@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class KdTree implements PointContainer
@@ -51,7 +52,10 @@ public class KdTree implements PointContainer
 	private boolean atLeft(Node n, Point2D point, int l)
 	{
 		if (l % 2 == 0)
+		{
 			return point.x() < n.point.x();
+		}
+		
 		return point.y() < n.point.y();
 	}
 
@@ -167,12 +171,12 @@ public class KdTree implements PointContainer
 
 	public Iterable<Point2D> range(RectHV rect)
 	{
-		SET<Point2D> thing = new SET<Point2D>();
+		ArrayList<Point2D> thing = new ArrayList<Point2D>();
 		range(root, rect, thing);
 		return thing;
 	}
 
-	private void range(Node node, RectHV rect, SET<Point2D> thing)
+	private void range(Node node, RectHV rect, ArrayList<Point2D> thing)
 	{
 		if (node != null && node.rect.intersects(rect))
 		{
@@ -180,7 +184,7 @@ public class KdTree implements PointContainer
 			{
 				thing.add(node.point);
 			}
-
+			
 			range(node.left, rect, thing);
 			range(node.right, rect, thing);
 		}
